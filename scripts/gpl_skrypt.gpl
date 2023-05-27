@@ -1,0 +1,25 @@
+set term pngcairo size 1024,1024 font "Ubuntu Condensed, 16"                           # set the output as a PNG file, specify the size and font for the plot
+set output "multiplot.png"                                                             # set the output file name
+
+
+# FUNCTION DEFINITION AND DATA FITTING
+f(x) = a*x**3 + b*x**2 + c*x +d
+fit f(x) 'files/fake_data.dat' via a,b,c,d    # fit f(x) to the data from the file
+
+set multiplot layout 3, 1
+set tmargin 3
+set title "sin(x)/x"                                                                   # title of the first plot
+plot sin(x)/x w l lw 4 lc rgb 'blue'
+
+set title "Third Degree Polynomial"                                                    # title of the second plot
+set xlabel "FAKE X DATA"                                                               # set the x-axis label
+set ylabel "FAKE Y DATA" 
+p 'files/fake_data.dat' w p pt 7 lc 7 ps 0.7 title "DATA", a*x**3+b*x**2+c*x+d w l lw 4 lc 2 title 'FITTED FUNCTION', 'files/gen_data.dat' w l lc 8 lw 6 dt 2 title "REAL DATA"
+
+
+set title "HISTOGRAM"                                                                  # title of the third plot
+set xlabel "Magnitude [mag]"                                                           # set the x-axis label
+set ylabel "Number"                                                                    # set the y-axis label
+set style fill solid 0.85 border lt -1                                                 # fill the histogram bars
+plot 'files/histogram.dat' using 1:2 w boxes lc rgb "green" title "HISTOGRAM"                # draw the histogram
+unset multiplot
